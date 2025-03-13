@@ -1,4 +1,4 @@
-# GenAI Learning Hub
+# GenAI Learning Platform
 
 An interactive website for learning about Generative AI concepts. The site features:
 
@@ -13,15 +13,66 @@ An interactive website for learning about Generative AI concepts. The site featu
 2. Open `index.html` in your browser
 3. Start learning!
 
-## Hosting on GitHub Pages
+## 🚀 Deployment
 
-1. Fork this repository
-2. Go to repository settings
-3. Navigate to Pages section
-4. Select main branch as source
-5. Save the settings
+### Deploying to GitHub Pages
 
-Your site will be available at `https://[your-username].github.io/genai-learning/`
+1. **Create a GitHub Repository**
+   - Go to [GitHub](https://github.com)
+   - Click the "+" icon in the top right
+   - Select "New repository"
+   - Name your repository `genai-learning-platform`
+   - Make it public
+   - Click "Create repository"
+
+2. **Push Your Code**
+   ```bash
+   # Initialize git in your project folder
+   git init
+
+   # Add all files
+   git add .
+
+   # Commit the files
+   git commit -m "Initial commit"
+
+   # Add remote repository
+   git remote add origin https://github.com/yourusername/genai-learning-platform.git
+
+   # Push to main branch
+   git push -u origin main
+   ```
+
+3. **Enable GitHub Pages**
+   - Go to your repository on GitHub
+   - Click "Settings"
+   - Scroll to "GitHub Pages" section
+   - Under "Source", select "main" branch
+   - Click "Save"
+
+4. **Access Your Site**
+   - Your site will be available at:
+   - `https://yourusername.github.io/genai-learning-platform`
+   - Wait a few minutes for the deployment to complete
+
+### Updating Your Site
+
+1. Make changes to your code locally
+2. Commit the changes:
+   ```bash
+   git add .
+   git commit -m "Update description here"
+   git push
+   ```
+3. GitHub Pages will automatically update
+
+### Troubleshooting
+
+- If your site isn't appearing:
+  - Make sure your repository is public
+  - Check if GitHub Pages is enabled
+  - Verify the correct branch is selected
+  - Wait a few minutes for changes to propagate
 
 ## Features
 
