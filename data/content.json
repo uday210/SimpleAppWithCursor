@@ -1,0 +1,43 @@
+{
+  "courseDuration": "2 hours",
+  "chapters": [
+    {
+      "id": "foundations",
+      "number": "01",
+      "title": "Foundations of Generative AI",
+      "duration": "30 mins",
+      "sections": [
+        {
+          "title": "What is Generative AI?",
+          "content": "Generative AI refers to artificial intelligence systems that can create new content...",
+          "keyConcepts": [
+            "Machine Learning Models",
+            "Neural Networks",
+            "Training Data",
+            "Pattern Recognition"
+          ],
+          "resources": [
+            {
+              "title": "GPT-4 Technical Report",
+              "url": "https://arxiv.org/abs/2303.04226"
+            },
+            {
+              "title": "DALL-E Explained",
+              "url": "https://openai.com/blog/dall-e/"
+            }
+          ]
+        }
+      ],
+      "quiz": {
+        "question": "What is the main purpose of Generative AI?",
+        "options": [
+          "To create new content based on learned patterns",
+          "To store large amounts of data",
+          "To connect to the internet",
+          "To play video games"
+        ],
+        "correct": 0
+      }
+    }
+  ]
+} 

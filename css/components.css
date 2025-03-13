@@ -1,0 +1,112 @@
+/* Button styles */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn--primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+}
+
+.btn--primary:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text);
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+}
+
+/* Progress Circle */
+.progress-circle {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+}
+
+.progress-ring__path {
+    stroke-dasharray: 100 100;
+    transition: stroke-dashoffset 0.3s;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+.progress-circle__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.progress-circle__percentage {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.progress-circle__label {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal__content {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.modal__body {
+    padding: 1.5rem;
+} 

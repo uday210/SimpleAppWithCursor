@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenAI Learning</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-72 bg-white border-r border-gray-200 fixed h-full overflow-y-auto">
+            <div class="p-6">
+                <h1 class="text-xl font-bold text-indigo-600 mb-6">GenAI Learn</h1>
+                
+                <!-- Progress Tracking -->
+                <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm text-gray-600">Course Progress</span>
+                        <span class="text-sm font-medium" id="progressText">0/4</span>
+                    </div>
+                    <div class="h-2 bg-gray-200 rounded-full">
+                        <div id="progressBar" class="h-2 bg-indigo-600 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <!-- Chapter List -->
+                <nav class="chapter-list space-y-3">
+                    <a href="#" class="block p-4 rounded-lg bg-indigo-600 text-white" data-chapter="0">
+                        <span class="text-sm opacity-75">Chapter 01</span>
+                        <h3 class="font-medium">Introduction to GenAI</h3>
+                    </a>
+                    <a href="#" class="block p-4 rounded-lg border border-gray-200 hover:border-indigo-600 transition-all" data-chapter="1">
+                        <span class="text-sm text-gray-500">Chapter 02</span>
+                        <h3 class="font-medium">Applications of GenAI</h3>
+                    </a>
+                    <a href="#" class="block p-4 rounded-lg border border-gray-200 hover:border-indigo-600 transition-all" data-chapter="2">
+                        <span class="text-sm text-gray-500">Chapter 03</span>
+                        <h3 class="font-medium">Technical Foundations</h3>
+                    </a>
+                    <a href="#" class="block p-4 rounded-lg border border-gray-200 hover:border-indigo-600 transition-all" data-chapter="3">
+                        <span class="text-sm text-gray-500">Chapter 04</span>
+                        <h3 class="font-medium">Ethics & Future</h3>
+                    </a>
+                </nav>
+
+                <!-- Certificate Button -->
+                <div class="mt-6">
+                    <button id="certificateBtn" disabled 
+                            class="w-full p-4 rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed transition-all
+                                   hover:bg-indigo-600 hover:text-white disabled:hover:bg-gray-100 disabled:hover:text-gray-400">
+                        Download Certificate
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="ml-72 flex-1 p-8">
+            <header class="bg-white rounded-xl shadow-sm p-6 mb-8 flex justify-between items-center">
+                <div>
+                    <span class="text-sm text-gray-500">Chapter 01</span>
+                    <h2 class="text-xl font-semibold">Introduction to GenAI</h2>
+                </div>
+                <button id="quizBtn" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                    Take Quiz
+                </button>
+            </header>
+
+            <div class="bg-white rounded-xl shadow-sm p-8">
+                <div id="chapterContent" class="max-w-3xl mx-auto">
+                    <!-- Content will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl max-w-lg w-full mx-4 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold">Knowledge Check</h3>
+                <button id="closeQuizBtn" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <div id="quizContent" class="space-y-4">
+                <!-- Quiz content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Name Input Modal -->
+    <div id="nameModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl max-w-md w-full mx-4 p-6">
+            <h3 class="text-xl font-semibold mb-4">Generate Your Certificate</h3>
+            <div class="mb-4">
+                <label for="studentName" class="block text-sm font-medium text-gray-700 mb-2">Enter your full name</label>
+                <input type="text" id="studentName" 
+                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
+                       placeholder="e.g., John Doe"
+                       autocomplete="name">
+            </div>
+            <div class="flex justify-end gap-3">
+                <button id="cancelNameBtn" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
+                <button id="confirmNameBtn" 
+                        class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                        disabled>
+                    Generate Certificate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        const chapters = [
+            // Chapter 1
+            {
+                title: "Introduction to GenAI",
+                number: "01",
+                content: `
+                    <div class="text-center mb-12">
+                        <h1 class="text-3xl font-bold mb-4">What is Generative AI?</h1>
+                        <p class="text-lg text-gray-600">
+                            Generative AI represents a revolutionary advancement in artificial intelligence 
+                            that can create new content across various mediums, from text and images to code and music.
+                        </p>
+                    </div>
+
+                    <section class="mb-12">
+                        <h2 class="text-2xl font-semibold mb-6">Key Concepts</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-gray-50 rounded-xl flex gap-4">
+                                <div class="text-3xl bg-white p-4 rounded-lg shadow-sm">🧠</div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Neural Networks</h3>
+                                    <p class="text-gray-600">Complex systems inspired by human brain structure</p>
+                                </div>
+                            </div>
+                            <div class="p-6 bg-gray-50 rounded-xl flex gap-4">
+                                <div class="text-3xl bg-white p-4 rounded-lg shadow-sm">🔄</div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Deep Learning</h3>
+                                    <p class="text-gray-600">Advanced algorithms that improve with data</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `,
+                quiz: {
+                    question: "What is the primary purpose of Generative AI?",
+                    options: ["Creating new content based on patterns", "Storing large amounts of data", "Managing databases"],
+                    correct: 0
+                }
+            },
+            // Chapter 2
+            {
+                title: "Applications of GenAI",
+                number: "02",
+                content: `
+                    <div class="text-center mb-12">
+                        <h1 class="text-3xl font-bold mb-4">Applications of GenAI</h1>
+                        <p class="text-lg text-gray-600">
+                            GenAI has revolutionized numerous industries with its ability to generate, 
+                            transform, and enhance content across different domains.
+                        </p>
+                    </div>
+
+                    <section class="mb-12">
+                        <h2 class="text-2xl font-semibold mb-6">Industry Applications</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-gray-50 rounded-xl flex gap-4">
+                                <div class="text-3xl bg-white p-4 rounded-lg shadow-sm">✍️</div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Content Creation</h3>
+                                    <p class="text-gray-600">Generate articles, stories, and marketing copy</p>
+                                </div>
+                            </div>
+                            <div class="p-6 bg-gray-50 rounded-xl flex gap-4">
+                                <div class="text-3xl bg-white p-4 rounded-lg shadow-sm">🎨</div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Digital Art</h3>
+                                    <p class="text-gray-600">Create images and designs from text descriptions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `,
+                quiz: {
+                    question: "Which is a common application of GenAI?",
+                    options: ["Content Creation", "Database Management", "Network Security"],
+                    correct: 0
+                }
+            },
+            // Chapter 3
+            {
+                title: "Technical Foundations",
+                number: "03",
+                content: `
+                    <div class="text-center mb-12">
+                        <h1 class="text-3xl font-bold mb-4">Technical Foundations</h1>
+                        <p class="text-lg text-gray-600">
+                            Understanding the core technical concepts and architecture behind Generative AI systems.
+                        </p>
+                    </div>
+
+                    <section class="mb-12">
+                        <h2 class="text-2xl font-semibold mb-6">Core Components</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-gray-50 rounded-xl flex gap-4">
+                                <div class="text-3xl bg-white p-4 rounded-lg shadow-sm">🔮</div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Model Architecture</h3>
+                                    <p class="text-gray-600">Advanced neural network structures</p>
+                                </div>
+                            </div>
+                            <div class="p-6 bg-gray-50 rounded-xl flex gap-4">
+                                <div class="text-3xl bg-white p-4 rounded-lg shadow-sm">📊</div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Training Data</h3>
+                                    <p class="text-gray-600">Large-scale datasets for learning</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `,
+                quiz: {
+                    question: "What is the core component of most GenAI systems?",
+                    options: ["Neural Networks", "Database Systems", "Operating Systems"],
+                    correct: 0
+                }
+            },
+            // Chapter 4
+            {
+                title: "Ethics & Future",
+                number: "04",
+                content: `
+                    <div class="text-center mb-12">
+                        <h1 class="text-3xl font-bold mb-4">Ethics and Future</h1>
+                        <p class="text-lg text-gray-600">
+                            Exploring ethical considerations and future developments in Generative AI.
+                        </p>
+                    </div>
+
+                    <section class="mb-12">
+                        <h2 class="text-2xl font-semibold mb-6">Key Considerations</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-gray-50 rounded-xl flex gap-4">
+                                <div class="text-3xl bg-white p-4 rounded-lg shadow-sm">⚖️</div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Ethical Usage</h3>
+                                    <p class="text-gray-600">Responsible AI development and deployment</p>
+                                </div>
+                            </div>
+                            <div class="p-6 bg-gray-50 rounded-xl flex gap-4">
+                                <div class="text-3xl bg-white p-4 rounded-lg shadow-sm">🔒</div>
+                                <div>
+                                    <h3 class="font-semibold mb-2">Privacy</h3>
+                                    <p class="text-gray-600">Data protection and user privacy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                `,
+                quiz: {
+                    question: "What is a key ethical concern in GenAI?",
+                    options: ["Bias in Training Data", "Power Consumption", "Storage Costs"],
+                    correct: 0
+                }
+            }
+        ];
+
+        let currentChapter = 0;
+        let completedChapters = new Set();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const chapterLinks = document.querySelectorAll('.chapter-list a');
+            const chapterContent = document.getElementById('chapterContent');
+            const chapterLabel = document.querySelector('header span');
+            const chapterTitle = document.querySelector('header h2');
+            const quizModal = document.getElementById('quizModal');
+            const nameModal = document.getElementById('nameModal');
+            const quizBtn = document.getElementById('quizBtn');
+            const closeQuizBtn = document.getElementById('closeQuizBtn');
+            const quizContent = document.getElementById('quizContent');
+            const certificateBtn = document.getElementById('certificateBtn');
+            const studentNameInput = document.getElementById('studentName');
+            const confirmNameBtn = document.getElementById('confirmNameBtn');
+            const cancelNameBtn = document.getElementById('cancelNameBtn');
+
+            function updateProgress() {
+                const totalChapters = chapters.length;
+                const completed = completedChapters.size;
+                const percentage = (completed / totalChapters) * 100;
+                
+                document.getElementById('progressBar').style.width = `${percentage}%`;
+                document.getElementById('progressText').textContent = `${completed}/${totalChapters}`;
+                
+                if (completed === totalChapters) {
+                    certificateBtn.disabled = false;
+                    certificateBtn.classList.remove('bg-gray-100', 'text-gray-400', 'cursor-not-allowed');
+                    certificateBtn.classList.add('bg-indigo-600', 'text-white');
+                }
+            }
+
+            function markChapterComplete() {
+                completedChapters.add(currentChapter);
+                updateProgress();
+            }
+
+            function loadChapter(index) {
+                currentChapter = index;
+                const chapter = chapters[index];
+
+                chapterContent.innerHTML = chapter.content;
+                chapterLabel.textContent = `Chapter ${chapter.number}`;
+                chapterTitle.textContent = chapter.title;
+
+                chapterLinks.forEach((link, i) => {
+                    if (i === index) {
+                        link.classList.add('bg-indigo-600', 'text-white');
+                        link.classList.remove('border', 'border-gray-200');
+                    } else {
+                        link.classList.remove('bg-indigo-600', 'text-white');
+                        link.classList.add('border', 'border-gray-200');
+                    }
+                });
+            }
+
+            function showQuiz() {
+                const chapter = chapters[currentChapter];
+                quizContent.innerHTML = `
+                    <h4 class="font-medium mb-4">${chapter.quiz.question}</h4>
+                    <div class="space-y-2">
+                        ${chapter.quiz.options.map((option, index) => `
+                            <button onclick="checkAnswer(${index})" 
+                                class="w-full p-4 text-left rounded-lg border border-gray-200 hover:border-indigo-600">
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+                quizModal.classList.remove('hidden');
+            }
+
+            window.checkAnswer = function(index) {
+                const chapter = chapters[currentChapter];
+                const isCorrect = index === chapter.quiz.correct;
+                
+                if (isCorrect) {
+                    alert('Correct! 🎉');
+                    quizModal.classList.add('hidden');
+                    markChapterComplete();
+                } else {
+                    alert('Try again!');
+                }
+            };
+
+            // Name input handling
+            studentNameInput.addEventListener('input', function() {
+                confirmNameBtn.disabled = !this.value.trim();
+            });
+
+            // Certificate button shows the name modal
+            certificateBtn.addEventListener('click', function() {
+                if (!this.disabled) {
+                    nameModal.classList.remove('hidden');
+                    studentNameInput.value = '';
+                    confirmNameBtn.disabled = true;
+                    studentNameInput.focus();
+                }
+            });
+
+            // Cancel button handling
+            cancelNameBtn.addEventListener('click', () => {
+                nameModal.classList.add('hidden');
+            });
+
+            // Confirm button handling
+            confirmNameBtn.addEventListener('click', () => {
+                const studentName = studentNameInput.value.trim();
+                if (studentName) {
+                    nameModal.classList.add('hidden');
+                    generateCertificate(studentName);
+                }
+            });
+
+            function generateCertificate(studentName) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 1200;
+                canvas.height = 800;
+                const ctx = canvas.getContext('2d');
+                
+                // Set background
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add decorative border
+                ctx.strokeStyle = '#6366f1';
+                ctx.lineWidth = 20;
+                ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+                
+                // Add inner border
+                ctx.strokeStyle = '#818cf8';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+                
+                // Add title
+                ctx.font = 'bold 60px Inter';
+                ctx.fillStyle = '#1e293b';
+                ctx.textAlign = 'center';
+                ctx.fillText('Certificate of Completion', canvas.width/2, 200);
+                
+                // Add text
+                ctx.font = '30px Inter';
+                ctx.fillText('This is to certify that', canvas.width/2, 300);
+                
+                // Add name
+                ctx.font = 'bold 50px Inter';
+                ctx.fillStyle = '#6366f1';
+                ctx.fillText(studentName, canvas.width/2, 400);
+                
+                // Add course name
+                ctx.font = '30px Inter';
+                ctx.fillStyle = '#1e293b';
+                ctx.fillText('has successfully completed the course', canvas.width/2, 460);
+                ctx.font = 'bold 40px Inter';
+                ctx.fillText('Generative AI Fundamentals', canvas.width/2, 520);
+                
+                // Add date
+                const date = new Date().toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                ctx.font = '25px Inter';
+                ctx.fillText(`Completed on ${date}`, canvas.width/2, 600);
+                
+                // Add signature line
+                ctx.strokeStyle = '#1e293b';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(canvas.width/2 - 100, 700);
+                ctx.lineTo(canvas.width/2 + 100, 700);
+                ctx.stroke();
+                ctx.font = '20px Inter';
+                ctx.fillText('Course Instructor', canvas.width/2, 730);
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 'GenAI-Certificate.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+
+            // Event listeners
+            chapterLinks.forEach((link, index) => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    loadChapter(index);
+                });
+            });
+
+            quizBtn.addEventListener('click', showQuiz);
+            closeQuizBtn.addEventListener('click', () => quizModal.classList.add('hidden'));
+
+            // Initialize
+            loadChapter(0);
+            updateProgress();
+        });
+    </script>
+</body>
+</html> 
