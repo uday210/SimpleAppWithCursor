@@ -52,7 +52,8 @@ An interactive website for learning about Generative AI concepts. The site featu
 
 4. **Access Your Site**
    - Your site will be available at:
-   - `https://yourusername.github.io/genai-learning-platform`
+   - `https://yourusername.github.io/repname`
+   - ex : https://uday210.github.io/SimpleAppWithCursor/
    - Wait a few minutes for the deployment to complete
 
 ### Updating Your Site
