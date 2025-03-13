@@ -37,7 +37,7 @@ An interactive website for learning about Generative AI concepts. The site featu
    git commit -m "Initial commit"
 
    # Add remote repository
-   git remote add origin https://github.com/yourusername/genai-learning-platform.git
+   git remote add origin https://github.com/yourusername/SimpleAppWithCursor.git
 
    # Push to main branch
    git push -u origin main
